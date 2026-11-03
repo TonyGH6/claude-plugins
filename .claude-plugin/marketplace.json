@@ -1,0 +1,14 @@
+{
+  "name": "treetop",
+  "description": "Claude Code plugins for TreeTop Odoo work",
+  "owner": {
+    "name": "TonyGH6"
+  },
+  "plugins": [
+    {
+      "name": "treetop-odoo",
+      "source": "./plugins/treetop-odoo",
+      "description": "Start and finish TreeTop odoo-crm tasks, run Odoo in StackYard environments, review changes, and guard shared branches and Odoo sources"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "treetop-odoo",
+  "description": "Start and finish TreeTop odoo-crm tasks, run Odoo in StackYard environments, review changes, and guard shared branches and Odoo sources",
+  "author": {
+    "name": "TonyGH6"
+  }
+}
