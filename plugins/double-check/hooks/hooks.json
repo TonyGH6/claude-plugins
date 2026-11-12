@@ -1,0 +1,17 @@
+{
+  "description": "Send each plan to a read-only Cursor agent for review when Claude asks to leave plan mode.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/cursor_review.py\"",
+            "timeout": 900
+          }
+        ]
+      }
+    ]
+  }
+}

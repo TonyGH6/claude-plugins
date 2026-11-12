@@ -17,6 +17,10 @@ For work on the TreeTop odoo-crm repository (Odoo 19) in StackYard environments.
 
 The hooks act only in checkouts whose `origin` is `TreetopAM/odoo-crm`; elsewhere they stay silent. They need `node` on the `PATH`.
 
+## double-check
+
+Works in any project. When Claude finishes a plan in plan mode (or via `/double-check:double-check <feature>`), a hook sends it to a read-only Cursor agent for review; Claude decides on each finding and revises the plan before you approve it. Needs `python3` and a logged-in `cursor-agent`. Details and settings: [plugins/double-check/README.md](plugins/double-check/README.md).
+
 ## Install
 
 The repository is private, so use the HTTPS form: Claude Code then clones with your `gh` login instead of trying SSH first.
@@ -24,6 +28,7 @@ The repository is private, so use the HTTPS form: Claude Code then clones with y
 ```bash
 claude plugin marketplace add https://github.com/TonyGH6/claude-plugins.git
 claude plugin install treetop-odoo@treetop
+claude plugin install double-check@treetop
 ```
 
 That installs it for you in every project on this machine, including StackYard case environments.

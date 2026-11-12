@@ -9,6 +9,11 @@
       "name": "treetop-odoo",
       "source": "./plugins/treetop-odoo",
       "description": "Start and finish TreeTop odoo-crm tasks, run Odoo in StackYard environments, review changes, and guard shared branches and Odoo sources"
+    },
+    {
+      "name": "double-check",
+      "source": "./plugins/double-check",
+      "description": "When a plan leaves plan mode, a read-only Cursor agent reviews it; Claude decides on each finding and revises the plan before you approve it"
     }
   ]
 }
