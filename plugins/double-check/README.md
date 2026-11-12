@@ -39,12 +39,12 @@ The Cursor review usually takes one to a few minutes.
 
 ## Settings
 
-Set these in the `env` block of `~/.claude/settings.json` (or a project's `.claude/settings.json`):
+All optional. Set them in the `env` block of `~/.claude/settings.json` (or a project's `.claude/settings.json`):
 
 ```json
 {
   "env": {
-    "DOUBLE_CHECK_CURSOR_MODEL": "<a non-Claude model from `cursor-agent models`>",
+    "DOUBLE_CHECK_CURSOR_MODEL": "gemini-4-argon-high",
     "DOUBLE_CHECK_MAX_ROUNDS": "1"
   }
 }
@@ -52,7 +52,7 @@ Set these in the `env` block of `~/.claude/settings.json` (or a project's `.clau
 
 | Variable | Default | What it does |
 |---|---|---|
-| `DOUBLE_CHECK_CURSOR_MODEL` | Cursor account default | Model the reviewer uses. Pick a non-Claude model so the second opinion has different blind spots. |
+| `DOUBLE_CHECK_CURSOR_MODEL` | `gemini-4-carbon-high` | Model the reviewer uses, from `cursor-agent models`. Keep it non-Claude so the second opinion has different blind spots. `auto` lets Cursor pick, which may route to Claude. |
 | `DOUBLE_CHECK_MAX_ROUNDS` | `1` | Review rounds per plan. `2` reviews the revised plan once more. |
 | `DOUBLE_CHECK_TIMEOUT` | `600` | Seconds before a review is abandoned. Keep it under the hook timeout (900 s, in `hooks/hooks.json`). |
 | `DOUBLE_CHECK_CURSOR_BIN` | `cursor-agent` on PATH, then `~/.local/bin/cursor-agent` | Full path to the Cursor CLI. |
@@ -73,4 +73,5 @@ To change what the reviewer looks for, edit `prompts/review-prompt.md`. Keep the
 - **Nothing happens when the plan is ready:** check `/hooks`, then restart Claude Code.
 - **"cursor-agent was not found":** hooks can run with a shorter PATH than your terminal. Set `DOUBLE_CHECK_CURSOR_BIN` to the output of `which cursor-agent`.
 - **Unknown flag errors from cursor-agent:** update it with `cursor-agent update`.
+- **Model errors from cursor-agent:** the model may not be available to your Cursor account. Pick another non-Claude model from `cursor-agent models` and set `DOUBLE_CHECK_CURSOR_MODEL`.
 - **Windows (native):** if `python3` doesn't exist, change `python3` to `python` in `hooks/hooks.json`.

@@ -14,7 +14,8 @@ Settings (environment variables, all optional; they can be set in the "env"
 block of ~/.claude/settings.json):
   DOUBLE_CHECK_DISABLE=1          skip reviews entirely
   DOUBLE_CHECK_MAX_ROUNDS=1       review rounds per plan before it goes to you
-  DOUBLE_CHECK_CURSOR_MODEL=...   model Cursor uses (list them: cursor-agent models)
+  DOUBLE_CHECK_CURSOR_MODEL=...   model Cursor uses (default gemini-4-carbon-high;
+                                  list them: cursor-agent models; "auto" lets Cursor pick)
   DOUBLE_CHECK_TIMEOUT=600        seconds before the Cursor review is abandoned
   DOUBLE_CHECK_CURSOR_BIN=...     path to cursor-agent if it is not on PATH
 
@@ -34,7 +35,11 @@ from pathlib import Path
 PLUGIN_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT") or Path(__file__).resolve().parent.parent)
 PROMPT_FILE = PLUGIN_ROOT / "prompts" / "review-prompt.md"
 
-MAX_PLAN_CHARS = 100_000      # keeps the command-line argument well under OS limits
+# A non-Claude model, so the second opinion has different blind spots from the
+# Claude that wrote the plan. Cursor's own "auto" default may route to Claude.
+DEFAULT_MODEL = "gemini-4-carbon-high"
+
+MAX_PLAN_CHARS = 100_000     # keeps the command-line argument well under OS limits
 MAX_REVIEW_CHARS = 20_000     # keeps the review from flooding Claude's context
 STATE_TTL_SECONDS = 2 * 3600  # an unfinished review cycle older than this is forgotten
 
@@ -138,9 +143,8 @@ def run_cursor(plan, cwd):
     # --mode ask is Cursor's read-only mode. Never add --force: it approves
     # every tool call, shell commands included.
     cmd = [binary, "-p", "--mode", "ask", "--trust", "--output-format", "text"]
-    model = os.environ.get("DOUBLE_CHECK_CURSOR_MODEL", "").strip()
-    if model:
-        cmd += ["--model", model]
+    model = os.environ.get("DOUBLE_CHECK_CURSOR_MODEL", "").strip() or DEFAULT_MODEL
+    cmd += ["--model", model]
     cmd.append(prompt)
 
     timeout = env_int("DOUBLE_CHECK_TIMEOUT", 600, 30)
@@ -162,7 +166,7 @@ def run_cursor(plan, cwd):
         return False, f"cursor-agent could not be started: {exc}"
 
     elapsed = time.time() - started
-    log(f"cursor-agent exit={result.returncode} in {elapsed:.0f}s (model={model or 'default'})")
+    log(f"cursor-agent exit={result.returncode} in {elapsed:.0f}s (model={model})")
 
     review = (result.stdout or "").strip()
     if result.returncode != 0:

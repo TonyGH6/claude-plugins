@@ -1,6 +1,6 @@
 {
   "name": "double-check",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Double-check workflow: when Claude Code finishes a plan in plan mode, a read-only Cursor agent reviews it, Claude decides on each finding and revises the plan, then you approve it before implementation.",
   "author": {
     "name": "TonyGH6"
